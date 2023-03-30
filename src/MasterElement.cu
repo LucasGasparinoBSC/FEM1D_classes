@@ -248,20 +248,31 @@ void MasterElement::CreateMasterElement(int &p)
 {
     // Set element order
     me_Order = p;
+
     // Set number of nodes
     me_NumNodes = me_Order + 1;
+
     // Set number of Gauss points
     me_NumGPs = me_Order + 1;
+
     // Set number of high order nodes
     me_hoNodes = me_NumNodes-2;
-    // Allocate memory for node ordering
-    me_NodeOrdering = (int *)malloc(me_NumNodes * sizeof(int));
-    // Allocate memory for Gauss points
-    me_GaussPoints = (GaussPoint *)malloc(me_NumGPs * sizeof(GaussPoint));
-    // Allocate memory for shape functions
-    me_Ngp = (float *)malloc(me_NumGPs * me_NumNodes * sizeof(float));
-    // Allocate memory for shape function derivatives
-    me_dNgp = (float *)malloc(me_NumGPs * me_NumNodes * sizeof(float));
+
+    // Allocate memory if necessary, otherwise reallocate to fiit new bounds
+    if (me_NodeOrdering == NULL)
+    {
+        me_NodeOrdering = (int *)malloc(me_NumNodes * sizeof(int));
+        me_Ngp = (float *)malloc(me_NumGPs * me_NumNodes * sizeof(float));
+        me_dNgp = (float *)malloc(me_NumGPs * me_NumNodes * sizeof(float));
+        me_GaussPoints = (GaussPoint *)malloc(me_NumGPs * sizeof(GaussPoint));
+    }
+    else
+    {
+        me_NodeOrdering = (int *)realloc(me_NodeOrdering, me_NumNodes * sizeof(int));
+        me_Ngp = (float *)realloc(me_Ngp, me_NumGPs * me_NumNodes * sizeof(float));
+        me_dNgp = (float *)realloc(me_dNgp, me_NumGPs * me_NumNodes * sizeof(float));
+        me_GaussPoints = (GaussPoint *)realloc(me_GaussPoints, me_NumGPs * sizeof(GaussPoint));
+    }
 
     // Create Gauss points
     createGaussPoints();

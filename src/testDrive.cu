@@ -136,5 +136,35 @@ int main()
             GaussPoint gp = me2.extract_GaussPoint(igaus);
             printf("Gauss point %d: idx = %d, x = %f, val = %f, wgp = %f\n", igaus, gp.get_nId(), gp.get_nX(), gp.get_nVal(), gp.get_gpWeight());
         }
+        // Modify me2 to be order 1
+        int me2_p = 1;
+        me2.CreateMasterElement(me2_p);
+        printf("Master element me2: p = %d, nNodes = %d, nGaussPoints = %d\n", me2.get_eOrder(), me2.get_eNumNodes(), me2.get_eNumGPs());
+        for (int igaus = 0; igaus < me2.get_eNumGPs(); igaus++)
+        {
+            GaussPoint gp = me2.extract_GaussPoint(igaus);
+            printf("Gauss point %d: idx = %d, x = %f, val = %f, wgp = %f\n", igaus, gp.get_nId(), gp.get_nX(), gp.get_nVal(), gp.get_gpWeight());
+        }
+        // Print N
+        float *auxN2 = (float*)malloc(me2.get_eNumNodes()*me2.get_eNumGPs()*sizeof(float));
+        auxN2 = me2.extract_eNgp();
+        for (int igaus = 0; igaus < me2.get_eNumGPs(); igaus++)
+        {
+            for (int inode = 0; inode < me2.get_eNumNodes(); inode++)
+            {
+                printf("N[%d][%d] = %f\n", igaus, inode, auxN2[igaus*me2.get_eNumNodes()+inode]);
+            }
+        }
+        // Print dN
+        float *auxdN2 = (float*)malloc(me2.get_eNumNodes()*me2.get_eNumGPs()*sizeof(float));
+        auxdN2 = me2.extract_edNgp();
+        for (int igaus = 0; igaus < me2.get_eNumGPs(); igaus++)
+        {
+            for (int inode = 0; inode < me2.get_eNumNodes(); inode++)
+            {
+                printf("dN[%d][%d] = %f\n", igaus, inode, auxdN2[igaus*me2.get_eNumNodes()+inode]);
+            }
+        }
+        
     return EXIT_SUCCESS;
 }
