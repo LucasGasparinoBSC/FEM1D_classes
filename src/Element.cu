@@ -37,8 +37,10 @@ Element::~Element()
 // Getters and extractors
 const int& Element::get_eId() {return e_Id;}
 const float& Element::get_eLength() {return e_Length;}
+const float& Element::get_eJacobian() {return e_Jacobian;}
 int& Element::extract_eId() {return e_Id;}
 float& Element::extract_eLength() {return e_Length;}
+float& Element::extract_eJacobian() {return e_Jacobian;}
 Node& Element::extract_Node(int i) {return e_Nodes[i];}
 
 // Setters

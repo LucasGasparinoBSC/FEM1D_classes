@@ -19,8 +19,10 @@ class Element : public MasterElement
         ~Element();
         const int& get_eId();
         const float& get_eLength();
+        const float& get_eJacobian();
         int& extract_eId();
         float& extract_eLength();
+        float& extract_eJacobian();
         Node& extract_Node(int i);
         void set_eId(int &id);
         void set_eNodes(Node *n);

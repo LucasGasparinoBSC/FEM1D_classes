@@ -3,6 +3,7 @@
 #include "Node.cuh"
 #include "GaussPoint.cuh"
 #include "MasterElement.cuh"
+#include "Element.cuh"
 
 int main()
 {
@@ -166,5 +167,55 @@ int main()
             }
         }
         
+    // Test creation of Element
+        // Create an element using the paramettrized constructor
+        int ep0 = 1;
+        int id_e0 = 10;
+        Element e0(ep0, id_e0);
+
+        // Print Element attributes
+        printf("Element e0: id = %d, l = %f\n", e0.get_eId(), e0.get_eLength());
+
+        // Get node information
+        int nNodes = e0.get_eNumNodes();
+        for (int i = 0; i < nNodes; i++)
+        {
+            Node n = e0.extract_Node(i);
+            printf("Node: id = %d, x = %f, val = %f\n", n.get_nId(), n.get_nX(), n.get_nVal());
+        }
+
+        // Create an element using the default constructor
+        Element e1;
+        // Print Element attributes
+        printf("Element e1: id = %d, l = %f\n", e1.get_eId(), e1.get_eLength());
+
+        // Get node information
+        nNodes = e1.get_eNumNodes();
+        printf("Number of nodes: %d\n", nNodes);
+        for (int i = 0; i < nNodes; i++)
+        {
+            Node n = e1.extract_Node(i);
+            printf("Node: id = %d, x = %f, val = %f\n", n.get_nId(), n.get_nX(), n.get_nVal());
+        }
+
+        // Modify element to be of order 2
+        int ep1 = 2;
+        e1.CreateMasterElement(ep1);
+        nNodes = e1.get_eNumNodes();
+        printf("Number of nodes: %d\n", nNodes);
+
+        // Create an element using the copy constructor
+        Element e2(e0);
+        // Print Element attributes
+        printf("Element e2: id = %d, l = %f\n", e2.get_eId(), e2.get_eLength());
+
+        // Get node information
+        nNodes = e2.get_eNumNodes();
+        printf("Number of nodes: %d\n", nNodes);
+        for (int i = 0; i < nNodes; i++)
+        {
+            Node n = e2.extract_Node(i);
+            printf("Node: id = %d, x = %f, val = %f\n", n.get_nId(), n.get_nX(), n.get_nVal());
+        }
     return EXIT_SUCCESS;
 }
