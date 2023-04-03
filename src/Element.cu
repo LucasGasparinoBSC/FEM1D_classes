@@ -47,6 +47,14 @@ Node& Element::extract_Node(int i) {return e_Nodes[i];}
 void Element::set_eId(int &id) {e_Id = id;}
 void Element::set_eNodes(Node *nodes)
 {
+    // Check that incoming extreme nodes match our indices
+    if (nodes[0].get_nId() != e_Id || nodes[1].get_nId() != e_Id+1)
+    {
+        printf("Element %d: incoming nodes do not match element indices.\n", e_Id);
+        exit(1);
+    }
+
+    // Set the element nodes
     e_Nodes = nodes;
     e_Length = e_Nodes[1].get_nX() - e_Nodes[0].get_nX();
     e_Jacobian = e_Length / 2.0f;
@@ -57,4 +65,23 @@ void Element::set_eNodes(Node *nodes)
         printf("Element length %ff <= 0.0. Check node positions.\n", e_Length);
         exit(1);
     }
+}
+
+// Element creator
+void Element::CreateElement(int &id, int &p, Node *nodes)
+{
+    // Set the element id
+    e_Id = id;
+
+    // Create master properties using order p
+    CreateMasterElement(p);
+
+    // Allocate memory for element nodes
+    e_Nodes = (Node *)malloc(me_NumNodes * sizeof(Node));
+
+    // Set the element nodes
+    int auxId = e_Id+1;
+    e_Nodes[0].set_nId(e_Id);
+    e_Nodes[1].set_nId(auxId);
+    set_eNodes(nodes);
 }

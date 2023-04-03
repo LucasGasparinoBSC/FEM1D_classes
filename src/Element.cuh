@@ -26,6 +26,7 @@ class Element : public MasterElement
         Node& extract_Node(int i);
         void set_eId(int &id);
         void set_eNodes(Node *n);
+        void CreateElement(int &id, int &p, Node *nodes);
 };
 
 #endif
